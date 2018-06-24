@@ -1,0 +1,48 @@
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: inherit;
+}
+
+html {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: Consolas, sans-serif;
+}
+
+.fibonacci {
+	display: grid;
+	grid-auto-flow: column;
+	justify-content: start;
+	grid-gap: 10px;
+	padding: 10px;
+}
+
+.digit-count {
+	display: inline-block;
+	border: 1px solid black;
+	height: 100%;
+}
+
+.digit-count__title {
+	padding: 10px 20px;
+	background-color: #ddd;
+	width: 100%;
+	text-align: center;
+	display: inline-block;
+}
+
+.digit-count__data {
+	padding: 10px 20px;
+	border-top: 1px solid #000;
+	display: grid;
+	grid-template-columns: 60px max-content;
+	grid-column-gap: 10px;
+	justify-content: space-around;
+}
