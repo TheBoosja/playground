@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>d3</title>
+	<style type="text/css">
+
+	</style>
+</head>
+
+<body>
+	<div id="chart"></div>
+
+	<script src="https://d3js.org/d3.v5.js"></script>
+	<script>
+		var margin = { top: 50, right: 50, bottom: 50, left: 50 }
+		var width = window.innerWidth - margin.left - margin.right // Use the window's width 
+		var height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
+
+		var xScale = d3.scaleLinear()
+			.domain([30, 35])
+			.range([0, width]);
+
+		var yScale = d3.scaleLinear()
+			.domain([0, 10])
+			.range([height, 0])
+			// .ticks(4);
+
+		var lineGen = d3.line()
+			.x((d) => xScale(d.week))
+			.y((d) => yScale(d.value));
+
+		var datasets = [
+			[
+				{ week: 31, value: 9 },
+				{ week: 32, value: 4 },
+				{ week: 33, value: 6 },
+				{ week: 34, value: 7 },
+			],
+			[
+				{ week: 31, value: 1 },
+				{ week: 32, value: 4 },
+				{ week: 33, value: 5 },
+				{ week: 34, value: 3 },
+			],
+			[
+				{ week: 31, value: 7 },
+				{ week: 32, value: 8 },
+				{ week: 33, value: 2 },
+				{ week: 34, value: 10 },
+			]
+		];
+		var targets = [
+			[
+				{ week: 31, value: 5 },
+				{ week: 32, value: 5 },
+				{ week: 33, value: 5 },
+				{ week: 34, value: 5 },
+			],
+			[
+				{ week: 31, value: 7 },
+				{ week: 32, value: 7 },
+				{ week: 33, value: 7 },
+				{ week: 34, value: 7 },
+			],
+			[
+				{ week: 31, value: 9 },
+				{ week: 32, value: 9 },
+				{ week: 33, value: 9 },
+				{ week: 34, value: 9 },
+			]
+		];
+
+		var svg = d3.select('#chart')
+			.append('svg')
+			.attr('width', width + margin.left + margin.right)
+			.attr('height', height + margin.top + margin.bottom)
+			.append('g')
+			.attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+		svg.append('g')
+			.attr('class', 'x axis')
+			.attr('transform', `translate(0, ${height})`)
+			.call(d3.axisBottom(xScale));
+
+		svg.append('g')
+			.attr('class', 'y axis')
+			.call(d3.axisLeft(yScale));
+
+		svg.append('g')
+			.attr('class', 'grid')
+			.call(d3.axisLeft(yScale).ticks(5).tickSize(-width).tickFormat(''));
+
+		var cScale = d3.scaleSequential()
+			.domain([0, 3])
+			.interpolator(d3.interpolateSinebow);
+
+		datasets.forEach((set, idx) => {
+			svg.append('path')
+				.datum(set)
+				.attr('d', lineGen)
+				.attr('fill', 'none')
+				.attr('stroke', cScale(idx))
+				.attr('stroke-width', 5)
+
+			svg.append('path')
+				.datum(targets[idx])
+				.attr('d', lineGen)
+				.attr('fill', 'none')
+				.attr('stroke', cScale(idx))
+				.attr('stroke-width', 5)
+				.style('stroke-dasharray', 15)
+		});
+
+	</script>
+</body>
+
+</html>
